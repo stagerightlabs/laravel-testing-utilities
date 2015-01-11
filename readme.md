@@ -4,7 +4,7 @@ This package is intended to be a collection of helpful utilities to assist with 
 
 To install this package, run 
 ```bash
-$ composer require srlabs/laravel-utilities
+$ composer require srlabs/laravel-testing-utilities
 ```
 
 and then add the service provider to your service providers listing in ```app/config/app.php```
