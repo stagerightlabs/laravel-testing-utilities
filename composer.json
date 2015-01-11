@@ -1,0 +1,22 @@
+{
+    "name": "srlabs/laravel-testing-utilities",
+    "description": "Helper utilities for testing Laravel Applications",
+    "license": "MIT",
+    "keywords": ["laravel", "testing"],
+    "authors": [
+        {
+            "name": "Ryan C. Durham",
+            "email": "ryan@stagerightlabs.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0",
+        "illuminate/support": "4.2.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "SRLabs\\Utilities\\": "src/Utilities"
+        }
+    },
+    "minimum-stability": "stable"
+}
