@@ -1,10 +1,9 @@
 <?php namespace SRLabs\Utilities\Commands;
 
-use Illuminate\Config\FileLoader;
-use Illuminate\Config\Repository;
+use Illuminate\Contracts\Config;
+use Illuminate\Contracts\Filesystem;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
 
 class TestDB extends Command {
@@ -28,12 +27,11 @@ class TestDB extends Command {
 	 */
 	private $dbpath;
 
-	public function __construct(Filesystem $file, Repository $config)
+	public function __construct(Filesystem $file)
 	{
 		parent::__construct();
 		// DI Member assignment
 		$this->file = $file;
-		$this->config = $config;
 	}
 
 	/*
@@ -52,70 +50,37 @@ class TestDB extends Command {
 		if ( ! $this->confirmToProceed()) return;
 
 		// First check that we are using sqlite as the testing database
-		$this->confirmTestingDBConfig();
-
-		// Gather connection name
-		$this->connection = $this->argument('connection');
-
-		// Make sure the connection is usable
-		$this->prepareDBConnection();
+		$this->prepareDatabaseConnection();
 
 		// Confirm DB file exists
 		$this->prepareSQLiteFile();
 
 		// Everything is in order - we can proceed.
-		$this->call('migrate', array('--database' => $this->connection, '--env' => 'testing'));
-		$this->call('db:seed', array('--database' => $this->connection, '--env' => 'testing'));
+		$this->call('migrate', array('--database' => $this->connection));
+		$this->call('db:seed', array('--database' => $this->connection));
 	}
 
 	/**
 	 * This whole endeavor is pointless if there is no testing environment configuration available.
 	 */
-	protected function confirmTestingDBConfig()
+	protected function prepareDatabaseConnection()
 	{
-		if (! $this->file->exists(app_path().'/config/testing/database.php'))
+        $this->connection = config('database.connections.' . $this->argument('connection'), []);
+
+        if (empty($this->connection) || !array_key_exists('database', $this->connection))
 		{
-			$this->error( 'No database config found for the testing environment.' );
+            $this->error('SQLite DB connection "' . $this->argument('connection') . '" not found in config.' );
 			exit();
 		}
-	}
 
-	/**
-	 * Make sure the specified connection exists in the testing config file.  If it does, 
-	 * add those details to the current environment's database connections.
-	 */
-	protected function prepareDBConnection()
-	{
-		// Logic flag
-		$exists = false;
-		
-		// Read the testing database config file
-		$config = require app_path().'/config/testing/database.php';
+        if ($this->connection['driver'] != 'sqlite')
+        {
+            $this->error( "This technique is not intended to be used on a non-sqlite database." );
+            exit();
+        }
 
-		// Search through the testing config options to find the 
-		// specified connection details
-		foreach($config['connections'] as $name => $connection)
-		{
-			if ($name == $this->connection && $connection['driver'] == 'sqlite')
-			{
-				// We found it. 
-				$exists = true;
-				
-				// Save the path to the sqlite file
-				$this->dbpath = $connection['database'];
-				
-				// Pull this connection into the current environment
-				$this->config->set('database.connections.' . $this->connection, $connection);
-				$this->config->set('database.default', 'sqlite');
-			}
-		}
-
-		if ( ! $exists)
-		{
-			// We couldn't find it.  Abort!
-			$this->error('SQLite DB connection "' . $this->connection . '" not found in testing config.' );
-			exit();
-		}
+        // Save the path to the sqlite file
+        $this->dbpath = $this->connection['database'];
 	}
 
 	/**
@@ -145,7 +110,7 @@ class TestDB extends Command {
 	protected function getArguments()
 	{
 		return array(
-			array('connection', InputArgument::OPTIONAL, 'Testing DB Connection Name', 'setup'),
+			array('connection', InputArgument::OPTIONAL, 'Testing DB Connection Name', 'staging'),
 		);
 	}
 
@@ -156,8 +121,6 @@ class TestDB extends Command {
 	 */
 	protected function getOptions()
 	{
-		return array(
-//			array('path', null, InputOption::VALUE_OPTIONAL, 'Path to target directory', public_path() . '/uploads'),
-		);
+		return [];
 	}
 }

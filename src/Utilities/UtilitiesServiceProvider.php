@@ -19,7 +19,7 @@ class UtilitiesServiceProvider extends ServiceProvider {
 	 */
 	public function boot()
 	{
-		$this->package('srlabs/testing-utilities');
+
 	}
 
 	/**
@@ -39,8 +39,7 @@ class UtilitiesServiceProvider extends ServiceProvider {
 		$this->app['utility:testdb'] = $this->app->share(function($app)
 		{
 			return new TestDB(
-				$this->app->make('files'),
-				$this->app->make('config')
+				$this->app->make('files')
 			);
 		});
 	}
