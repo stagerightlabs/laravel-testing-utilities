@@ -54,9 +54,11 @@ class TestDB extends Command {
 		// Confirm DB file exists
 		$this->prepareSQLiteFile();
 
+        $database = $this->argument('connection');
+        
 		// Everything is in order - we can proceed.
-		$this->call('migrate', array('--database' => $this->connection));
-		$this->call('db:seed', array('--database' => $this->connection));
+		$this->call('migrate', array('--database' => $database));
+		$this->call('db:seed', array('--database' => $database));
 	}
 
 	/**
