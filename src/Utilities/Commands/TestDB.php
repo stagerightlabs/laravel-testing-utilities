@@ -7,72 +7,72 @@ use Symfony\Component\Console\Input\InputArgument;
 
 class TestDB extends Command {
 
-	protected $name = 'utility:testdb';
+    protected $name = 'utility:testdb';
 
-	protected $description = 'Flush and migrate the testing database.';
+    protected $description = 'Flush and migrate the testing database.';
 
-	/**
-	 * @var
-	 */
-	private $file;
+    /**
+     * @var
+     */
+    private $file;
 
-	/**
-	 * @var
-	 */
-	private $connection;
+    /**
+     * @var
+     */
+    private $connection;
 
-	/**
-	 * @var
-	 */
-	private $dbpath;
+    /**
+     * @var
+     */
+    private $dbpath;
 
-	public function __construct(Filesystem $file)
-	{
-		parent::__construct();
-		// DI Member assignment
-		$this->file = $file;
-	}
+    public function __construct(Filesystem $file)
+    {
+        parent::__construct();
+        // DI Member assignment
+        $this->file = $file;
+    }
 
-	/*
-	 * Don't allow this command to be run in a production environment
-	 */
-	use ConfirmableTrait;
+    /*
+     * Don't allow this command to be run in a production environment
+     */
+    use ConfirmableTrait;
 
-	/**
-	 * This command prepares a sqlite testing database, to allow for the
-	 * technique described by Chris Duell here:
-	 * http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
-	 */
-	public function fire()
-	{
-		// Don't allow this command to run in a production environment
-		if ( ! $this->confirmToProceed()) return;
+    /**
+     * This command prepares a sqlite testing database, to allow for the
+     * technique described by Chris Duell here:
+     * http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
+     */
+    public function fire()
+    {
+        // Don't allow this command to run in a production environment
+        if ( ! $this->confirmToProceed()) return;
 
-		// First check that we are using sqlite as the testing database
-		$this->prepareDatabaseConnection();
+        // First check that we are using sqlite as the testing database
+        $this->prepareDatabaseConnection();
 
-		// Confirm DB file exists
-		$this->prepareSQLiteFile();
+        // Confirm DB file exists
+        $this->prepareSQLiteFile();
 
         $database = $this->argument('connection');
-        
-		// Everything is in order - we can proceed.
-		$this->call('migrate', array('--database' => $database));
-		$this->call('db:seed', array('--database' => $database));
-	}
 
-	/**
-	 * This whole endeavor is pointless if there is no testing environment configuration available.
-	 */
-	protected function prepareDatabaseConnection()
-	{
+        // Everything is in order - we can proceed.
+        $this->call('migrate', array('--database' => $database));
+        $this->call('db:seed', array('--database' => $database));
+    }
+
+    /**
+     * This whole endeavor is pointless if there is no testing environment configuration available.
+     */
+    protected function prepareDatabaseConnection()
+    {
         $this->connection = config('database.connections.' . $this->argument('connection'), []);
 
         if (empty($this->connection) || !array_key_exists('database', $this->connection))
-		{
+        {
             $this->error('SQLite DB connection "' . $this->argument('connection') . '" not found in config.' );
-			exit();
-		}
+            exit();
+        }
 
         if ($this->connection['driver'] != 'sqlite')
         {
@@ -82,46 +82,46 @@ class TestDB extends Command {
 
         // Save the path to the sqlite file
         $this->dbpath = $this->connection['database'];
-	}
+    }
 
-	/**
-	 * We want to start with a clean slate, i.e. an empty sqlite file.
-	 */
-	protected function prepareSQLiteFile()
-	{
-		// First remove the old database file
-		$this->file->delete($this->dbpath);
+    /**
+     * We want to start with a clean slate, i.e. an empty sqlite file.
+     */
+    protected function prepareSQLiteFile()
+    {
+        // First remove the old database file
+        $this->file->delete($this->dbpath);
 
-		// Now create an empty target database file
-		touch($this->dbpath);
-		
-		// Double check that the file exists before moving on
-		if (! $this->file->exists($this->dbpath))
-		{
-			$this->error( 'SQlite file not found.' );
-			exit();
-		}
-	}
+        // Now create an empty target database file
+        touch($this->dbpath);
 
-	/**
-	 * Get the console command arguments.
-	 *
-	 * @return array
-	 */
-	protected function getArguments()
-	{
-		return array(
-			array('connection', InputArgument::OPTIONAL, 'Testing DB Connection Name', 'staging'),
-		);
-	}
+        // Double check that the file exists before moving on
+        if (! $this->file->exists($this->dbpath))
+        {
+            $this->error( 'SQlite file not found.' );
+            exit();
+        }
+    }
 
-	/**
-	 * Get the console command options.
-	 *
-	 * @return array
-	 */
-	protected function getOptions()
-	{
-		return [];
-	}
+    /**
+     * Get the console command arguments.
+     *
+     * @return array
+     */
+    protected function getArguments()
+    {
+        return array(
+            array('connection', InputArgument::OPTIONAL, 'Testing DB Connection Name', 'staging'),
+        );
+    }
+
+    /**
+     * Get the console command options.
+     *
+     * @return array
+     */
+    protected function getOptions()
+    {
+        return [];
+    }
 }
