@@ -1,7 +1,7 @@
 <?php namespace SRLabs\Utilities\Commands;
 
 use Illuminate\Contracts\Config;
-use Illuminate\Contracts\Filesystem;
+use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputArgument;
