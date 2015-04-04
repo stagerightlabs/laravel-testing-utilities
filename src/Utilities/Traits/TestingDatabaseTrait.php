@@ -1,5 +1,6 @@
 <?php namespace SRLabs\Utilities\Traits;
 
+use SRLabs\Utilities\Exceptions\InvalidSQLiteConnectionException;
 
 trait TestingDatabase {
 
@@ -9,10 +10,14 @@ trait TestingDatabase {
 	 */
 	public function prepareDatabase($source, $destination)
 	{
-		$source = \Config::get('database.connections.' . $source);
-		$destination = \Config::get('database.connections.' . $destination);
+		$source = config('database.connections.' . $source);
+		$destination = config('database.connections.' . $destination);
 
-		exec('rm ' . $destination['database']);
+		if (!is_array($source) || !is_array($destination))
+		{
+			throw new InvalidSQLiteConnectionException;
+		}
+
 		exec('cp ' . $source['database'] . ' ' . $destination['database']);
 	}
 }
