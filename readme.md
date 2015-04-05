@@ -46,12 +46,12 @@ $ php artisan utility:testdb sqlite_testing
 
 This will run your migrations against the database specified in your 'setup' connection details. 
 
-Next, add the ```TestingDatabaseTrait``` to your test class, and use it as such: 
+Next, add the ```TestingDatabase``` trait to your test class, and use it as such: 
 
 ```php
 class FooTest extends TestCase {
     
-    use TestingDatabaseTrait;
+    use TestingDatabase;
     
     public function setUp()
     {

@@ -15,7 +15,7 @@ trait TestingDatabase {
 
 		if (!is_array($source) || !is_array($destination))
 		{
-			throw new InvalidSQLiteConnectionException;
+			throw new InvalidSQLiteConnectionException('You have specified an invalid sqlite connection.');
 		}
 
 		exec('cp ' . $source['database'] . ' ' . $destination['database']);
