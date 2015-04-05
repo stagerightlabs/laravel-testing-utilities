@@ -28,7 +28,7 @@ and then add the service provider to your service providers listing in ```app/co
 
 This utility makes it easy to implement the testing stratgey described by [Chris Duell](https://github.com/duellsy) in his blog post *[Speeding up PHP unit tests 15 times](http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/)*.  When running tests that require the use of a database persistence layer, running migrations and seeding the database for each test can take a very long time.  Chris instead suggests creating a sqlite database file ahead of time, and making a new copy of that file for each test instead.  
 
-This package adds an artisan command ('utility:testdb') that will run your migrations and seeds and save them to a pre-defined sqlite file.  Once that is complete, there is a companion trait that you add to your tests which will copy the staging db file to the primary testing db whenever you need it to when running your tests. 
+This package provides an artisan command ('utility:testdb') that will run your migrations and seeds and save them to a pre-defined sqlite file.  Once that is complete, there is a companion trait that you add to your tests which will copy the staging database file to the testing database location when running tests. 
 
 You need to define a sqlite database connection in your ```config/database.php``` file.  The connection name can be whatever you would like, but the package will assume a name of 'staging' if you don't provide one. 
 
@@ -57,7 +57,7 @@ class FooTest extends TestCase {
     {
       parent::setUp();
      
-      $this->prepareDatabase('setup', 'testing');
+      $this->prepareDatabase('staging', 'testing');
     }
     
     public function testSomethingIsTrue()
