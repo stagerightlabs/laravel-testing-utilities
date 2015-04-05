@@ -44,9 +44,15 @@ Custom 'sqlite_testing' connection:
 $ php artisan utility:testdb sqlite_testing
 ```
 
-This will run your migrations against the database specified in your 'setup' connection details. 
+You can also specify a Database Seeder class: 
 
-Next, add the ```TestingDatabase``` trait to your test class, and use it as such: 
+```bash
+$ php artisan utility:testdb sqlite_testing --class="SentinelDatabaseSeeder"
+```
+
+This command will migrate and seed the sqlite database you have specified. 
+
+When you are ready to use this new sqlite file in your tests, add the ```TestingDatabase``` trait to your test class, and use it as such: 
 
 ```php
 class FooTest extends TestCase {
@@ -67,3 +73,5 @@ class FooTest extends TestCase {
 
 }
 ```
+In this example "staging" is the Database connection that represents the pre-compiled sqlite file, and "testing" is a separate connection that represents the database that will be used by the tests. Each time the ```setUp()``` method is called, the testing sqlite file will be replaced by the staging sqlite file, effectively resetting your database to a clean starting point. 
+You may need to do some extra configuration to have phpunit use your "testing" database. 

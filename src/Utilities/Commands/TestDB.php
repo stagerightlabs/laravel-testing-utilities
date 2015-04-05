@@ -54,11 +54,17 @@ class TestDB extends Command {
         // Confirm DB file exists
         $this->prepareSQLiteFile();
 
+        // Gather arguments    
         $database = $this->argument('connection');
+
+        // Gather options
+        $seeder = $this->option('class');
 
         // Everything is in order - we can proceed.
         $this->call('migrate', array('--database' => $database));
-        $this->call('db:seed', array('--database' => $database));
+        
+        // If a seeder class was specified, pass that to the seed command
+        $this->call('db:seed', array('--database' => $database, 'class' => $seeder));
     }
 
     /**
@@ -122,6 +128,8 @@ class TestDB extends Command {
      */
     protected function getOptions()
     {
-        return [];
+        return array(
+            array('class', InputOption::VALUE_OPTIONAL, 'The seeder class to use when seeding the sqlite file', '')
+        );
     }
 }
