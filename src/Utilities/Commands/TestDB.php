@@ -130,7 +130,7 @@ class TestDB extends Command {
     protected function getOptions()
     {
         return array(
-            array('class', NULL, InputOption::VALUE_OPTIONAL, 'The seeder class to use when seeding the sqlite file', '')
+            array('class', null, InputOption::VALUE_OPTIONAL, 'The class to be used for seeding.', 'DatabaseSeeder'),
         );
     }
 }
