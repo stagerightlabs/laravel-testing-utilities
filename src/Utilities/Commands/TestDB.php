@@ -65,7 +65,7 @@ class TestDB extends Command {
         $this->call('migrate', array('--database' => $database));
         
         // If a seeder class was specified, pass that to the seed command
-        $this->call('db:seed', array('--database' => $database, 'class' => $seeder));
+        $this->call('db:seed', array('--database' => $database, '--class' => $seeder));
     }
 
     /**
