@@ -4,6 +4,7 @@ use Illuminate\Filesystem\Filesystem;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 class TestDB extends Command {
 
