@@ -56,16 +56,17 @@ class TestDB extends Command {
         $this->prepareSQLiteFile();
 
         // Gather arguments    
-        $connection = $this->argument('connection');
+        $name = $this->argument('connection');
+        $connection = config('database.connections.' . $name, []);
 
         // Gather options
         $seeder = $this->option('class');
 
         // Everything is in order - we can proceed.
-        $this->call('migrate', array('--database' => $connection));
+        $this->call('migrate', array('--database' => $name));
         
         // If a seeder class was specified, pass that to the seed command
-        $this->call('db:seed', array('--database' => $connection, '--class' => $seeder));
+        $this->call('db:seed', array('--database' => $name, '--class' => $seeder));
 
         // Send a completion message to the user
         $this->info($connection['database'] . " has been refreshed.");
