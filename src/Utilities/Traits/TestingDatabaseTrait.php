@@ -2,7 +2,7 @@
 
 use SRLabs\Utilities\Exceptions\InvalidSQLiteConnectionException;
 
-trait TestingDatabase {
+trait TestingDatabaseTrait {
 
 	/**
 	 * Implement the testing database management technique described by Chris Duell
