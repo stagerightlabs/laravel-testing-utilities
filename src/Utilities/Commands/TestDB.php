@@ -66,6 +66,7 @@ class TestDB extends Command {
         if (is_readable($connection['database']))
         {
             unlink($connection['database']);
+            touch($connection['database']);
         }
 
         // Everything is in order - we can proceed.
