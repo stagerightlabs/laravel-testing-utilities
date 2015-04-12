@@ -62,8 +62,11 @@ class TestDB extends Command {
         // Gather options
         $seeder = $this->option('class');
 
-        // Clear existing database
-        unlink($connection['database']);
+        // Clear existing database, if necessary
+        if (is_readable($connection['database']))
+        {
+            unlink($connection['database']);
+        }
 
         // Everything is in order - we can proceed.
         $this->call('migrate', array('--database' => $name));
