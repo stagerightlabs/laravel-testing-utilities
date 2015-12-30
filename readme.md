@@ -55,9 +55,12 @@ This command will migrate and seed the sqlite database you have specified.
 When you are ready to use this new sqlite file in your tests, add the ```TestingDatabase``` trait to your test class, and use it as such: 
 
 ```php
+
+use SRLabs\Utilities\Traits\TestingDatabaseTrait;
+
 class FooTest extends TestCase {
     
-    use TestingDatabase;
+    use TestingDatabaseTrait;
     
     public function setUp()
     {
