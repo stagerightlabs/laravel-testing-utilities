@@ -78,3 +78,49 @@ class FooTest extends TestCase {
 ```
 In this example "staging" is the Database connection that represents the pre-compiled sqlite file, and "testing" is a separate connection that represents the database that will be used by the tests. Each time the ```setUp()``` method is called, the testing sqlite file will be replaced by the staging sqlite file, effectively resetting your database to a clean starting point. 
 You may need to do some extra configuration to have phpunit use your "testing" database. 
+
+## (Optional) Run Automatically When Running PHPUnit
+
+Using this method will have `artisan utility:testdb` execute before any tests are ran **only** if there are new migration changes.
+
+#### 1. Create file `bootstrap/testing.php`:
+
+```php
+<?php
+
+define('ARTISAN_PATH', realpath(__DIR__ . '/../artisan'));
+
+/*
+|--------------------------------------------------------------------------
+| Check for new migrations and reseed if necessary
+|--------------------------------------------------------------------------
+|
+*/
+
+passthru('(php '.ARTISAN_PATH.' migrate:status --database='.(getenv('DB_CONNECTION') ?: 'testing').' | grep -q "| N    |") && php '.ARTISAN_PATH.' utility:testdb');
+
+/*
+|--------------------------------------------------------------------------
+| Include Standard Autoload File
+|--------------------------------------------------------------------------
+|
+*/
+
+require __DIR__ . '/autoload.php';
+```
+
+#### 2. Update `phpunit.xml`
+
+```xml
+<phpunit ...
+         bootstrap="bootstrap/testing.php"
+         ...
+>
+...
+    <php>
+        ...
+        <!-- Change this to your connection name (if customized) -->
+        <env name="DB_CONNECTION" value="testing"/>
+    </php>
+</phpunit>
+```
