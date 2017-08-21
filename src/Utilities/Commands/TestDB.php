@@ -44,7 +44,7 @@ class TestDB extends Command {
      * technique described by Chris Duell here:
      * http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/
      */
-    public function fire()
+    public function handle()
     {
         // Don't allow this command to run in a production environment
         if ( ! $this->confirmToProceed()) return;
