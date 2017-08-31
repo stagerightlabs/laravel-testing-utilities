@@ -6,33 +6,36 @@ This package is intended to be a collection of helpful utilities to assist with 
 |---|---|---|
 | 4.2.*  | 1.*  | ```"srlabs/laravel-testing-utilities": "~1"``` |
 | 5.0.*  | 2.*  | ```"srlabs/laravel-testing-utilities": "~2"```   |
+| 5.1.*  | 3.*  | ```"srlabs/laravel-testing-utilities": "~3"```   |
+| 5.4.*  | 4.*  | ```"srlabs/laravel-testing-utilities": "~4"```   |
+| 5.5.*  | 5.*  | ```"srlabs/laravel-testing-utilities": "~5"```   |
 
-To install this package, run 
+To install this package, run
 ```bash
 $ composer require srlabs/laravel-testing-utilities
 ```
 
 and then add the service provider to your service providers listing in ```app/config/app.php```
 
-```php 
+```php
 'providers' => array(
         // ...
 	    'SRLabs\Utilities\UtilitiesServiceProvider'
         // ...
 	),
-```	
+```
 
 ## Testing Assistant
 
-*Currently in beta testing.* 
+*Currently in beta testing.*
 
-This utility makes it easy to implement the testing stratgey described by [Chris Duell](https://github.com/duellsy) in his blog post *[Speeding up PHP unit tests 15 times](http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/)*.  When running tests that require the use of a database persistence layer, running migrations and seeding the database for each test can take a very long time.  Chris instead suggests creating a sqlite database file ahead of time, and making a new copy of that file for each test instead.  
+This utility makes it easy to implement the testing stratgey described by [Chris Duell](https://github.com/duellsy) in his blog post *[Speeding up PHP unit tests 15 times](http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/)*.  When running tests that require the use of a database persistence layer, running migrations and seeding the database for each test can take a very long time.  Chris instead suggests creating a sqlite database file ahead of time, and making a new copy of that file for each test instead.
 
-This package provides an artisan command ('utility:testdb') that will run your migrations and seeds and save them to a pre-defined sqlite file.  Once that is complete, there is a companion trait that you add to your tests which will copy the staging database file to the testing database location when running tests. 
+This package provides an artisan command ('utility:testdb') that will run your migrations and seeds and save them to a pre-defined sqlite file.  Once that is complete, there is a companion trait that you add to your tests which will copy the staging database file to the testing database location when running tests.
 
-You need to define a sqlite database connection in your ```config/database.php``` file.  The connection name can be whatever you would like, but the package will assume a name of 'staging' if you don't provide one. 
+You need to define a sqlite database connection in your ```config/database.php``` file.  The connection name can be whatever you would like, but the package will assume a name of 'staging' if you don't provide one.
 
-Default 'staging' connection: 
+Default 'staging' connection:
 
 ```bash
 $ php artisan utility:testdb
@@ -44,31 +47,31 @@ Custom 'sqlite_testing' connection:
 $ php artisan utility:testdb sqlite_testing
 ```
 
-You can also specify a Database Seeder class: 
+You can also specify a Database Seeder class:
 
 ```bash
 $ php artisan utility:testdb sqlite_testing --class="SentinelDatabaseSeeder"
 ```
 
-This command will migrate and seed the sqlite database you have specified. 
+This command will migrate and seed the sqlite database you have specified.
 
-When you are ready to use this new sqlite file in your tests, add the ```TestingDatabase``` trait to your test class, and use it as such: 
+When you are ready to use this new sqlite file in your tests, add the ```TestingDatabase``` trait to your test class, and use it as such:
 
 ```php
 
 use SRLabs\Utilities\Traits\TestingDatabaseTrait;
 
 class FooTest extends TestCase {
-    
+
     use TestingDatabaseTrait;
-    
+
     public function setUp()
     {
       parent::setUp();
-     
+
       $this->prepareDatabase('staging', 'testing');
     }
-    
+
     public function testSomethingIsTrue()
     {
         $this->assertTrue(true);
@@ -76,8 +79,8 @@ class FooTest extends TestCase {
 
 }
 ```
-In this example "staging" is the Database connection that represents the pre-compiled sqlite file, and "testing" is a separate connection that represents the database that will be used by the tests. Each time the ```setUp()``` method is called, the testing sqlite file will be replaced by the staging sqlite file, effectively resetting your database to a clean starting point. 
-You may need to do some extra configuration to have phpunit use your "testing" database. 
+In this example "staging" is the Database connection that represents the pre-compiled sqlite file, and "testing" is a separate connection that represents the database that will be used by the tests. Each time the ```setUp()``` method is called, the testing sqlite file will be replaced by the staging sqlite file, effectively resetting your database to a clean starting point.
+You may need to do some extra configuration to have phpunit use your "testing" database.
 
 ## (Optional) Run Automatically When Running PHPUnit
 
