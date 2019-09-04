@@ -2,11 +2,10 @@
 
 This package is intended to be a collection of helpful utilities to assist with the development and maintenance of Laravel Applications.
 
-| Laravel Version  | Sentinel Version  | Packagist Branch |
+| Laravel Version  | Package Version  | Packagist Branch |
 |---|---|---|
-| 5.6.*  | 6.*  | ```"srlabs/laravel-testing-utilities": "~6"```   |
-| 5.7.*  | 6.*  | ```"srlabs/laravel-testing-utilities": "~7"```   |
-| 5.8.*  | 6.*  | ```"srlabs/laravel-testing-utilities": "~8"```   |
+| 5.8.*  | 8.*  | ```"srlabs/laravel-testing-utilities": "~8"```   |
+| 6.*  | 9.*  | ```"srlabs/laravel-testing-utilities": "~9"```   |
 
 To install this package, run
 ```bash
