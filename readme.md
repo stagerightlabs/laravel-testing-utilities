@@ -6,7 +6,7 @@ This package is intended to be a collection of helpful utilities to assist with 
 |---|---|---|
 | 6.*  | 9.*  | ```"srlabs/laravel-testing-utilities": "~9"```   |
 | 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
-| 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
+| 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~11"```   |
 
 To install this package, run
 ```bash
