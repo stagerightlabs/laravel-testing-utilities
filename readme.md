@@ -4,8 +4,8 @@ This package is intended to be a collection of helpful utilities to assist with 
 
 | Laravel Version  | Package Version  | Packagist Branch |
 |---|---|---|
-| 5.8.*  | 8.*  | ```"srlabs/laravel-testing-utilities": "~8"```   |
 | 6.*  | 9.*  | ```"srlabs/laravel-testing-utilities": "~9"```   |
+| 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
 | 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
 
 To install this package, run
@@ -16,16 +16,14 @@ $ composer require srlabs/laravel-testing-utilities
 and then add the service provider to your service providers listing in ```app/config/app.php```
 
 ```php
-'providers' => array(
-        // ...
-	    'SRLabs\Utilities\UtilitiesServiceProvider'
-        // ...
-	),
+'providers' => [
+    // ...
+    'SRLabs\Utilities\UtilitiesServiceProvider'
+    // ...
+],
 ```
 
 ## Testing Assistant
-
-*Currently in beta testing.*
 
 This utility makes it easy to implement the testing stratgey described by [Chris Duell](https://github.com/duellsy) in his blog post *[Speeding up PHP unit tests 15 times](http://www.chrisduell.com/blog/development/speeding-up-unit-tests-in-php/)*.  When running tests that require the use of a database persistence layer, running migrations and seeding the database for each test can take a very long time.  Chris instead suggests creating a sqlite database file ahead of time, and making a new copy of that file for each test instead.
 
