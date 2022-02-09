@@ -4,9 +4,9 @@ This package is intended to be a collection of helpful utilities to assist with 
 
 | Laravel Version  | Package Version  | Packagist Branch |
 |---|---|---|
-| 6.*  | 9.*  | ```"srlabs/laravel-testing-utilities": "~9"```   |
 | 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
-| 7.*  | 10.*  | ```"srlabs/laravel-testing-utilities": "~10"```   |
+| 8.*  | 11.*  | ```"srlabs/laravel-testing-utilities": "~11"```   |
+| 9.*  | 12.*  | ```"srlabs/laravel-testing-utilities": "~12"```   |
 
 To install this package, run
 ```bash
